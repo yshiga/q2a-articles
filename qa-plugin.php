@@ -21,3 +21,6 @@ if (!defined('QA_VERSION')) { // don't allow this page to be requested directly 
 //Define global constants
 @define( 'ARTICLES_DIR', dirname( __FILE__ ) );
 @define( 'ARTICLES_FOLDER', basename( dirname( __FILE__ ) ) );
+
+// Page
+qa_register_plugin_module('page', 'qa-articles-page.php', 'qa_articles_page', 'Articles Page');
