@@ -5,7 +5,7 @@
         exit;
     }
 
-    class qa_articles_page
+    class qa_article_page
     {
 
         private $directory;

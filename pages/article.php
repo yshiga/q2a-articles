@@ -9,9 +9,9 @@
     $qa_content = qa_content_prepare(true);
     $page = qa_request_part(1);
 
-    $ret = exists_article_page($page);
-    if (!empty($ret)) {
-        $qa_content['title'] = @$ret['title'];
+    $article = exists_article_page($page);
+    if (!empty($article)) {
+        $qa_content['title'] = @$article['title'];
         $html = '<p>'.$page.'のまとめページ</p>';
         $qa_content['custom'] = $html;
     } else {
@@ -20,12 +20,17 @@
 
     return $qa_content;
 
-
+/*
+ * htmlフィアルのパス
+ */
 function articles_get_html_path($page)
 {
     return ARTICLES_DIR . '/html/' . $page . '.html';
 }
 
+/*
+ * 設定ファイルに一致するpathがあるか
+ */
 function exists_article_page($page)
 {
     $articles = Spyc::YAMLLoad(ARTICLES_DIR . '/articles.yml');
@@ -33,6 +38,7 @@ function exists_article_page($page)
     foreach ($articles as $article) {
         if($article['path'] === $page) {
             $ret = $article;
+            break;
         }
     }
     return $ret;
