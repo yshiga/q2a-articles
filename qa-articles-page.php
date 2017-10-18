@@ -22,7 +22,7 @@
         {
             return array(
                 array(
-                    'request' => '/articles',
+                    'request' => '/article',
                     'nav'     => 'null', // 'M'=main, 'F'=footer, 'B'=before main, 'O'=opposite main, null=none
                 ),
             );
@@ -33,21 +33,15 @@
             $requestparts = qa_request_parts();
 
             return ( !empty( $requestparts )
-                && @$requestparts[ 0 ] === 'articles'
+                && @$requestparts[ 0 ] === 'article'
             );
         }
 
         public function process_request( $request )
         {
-            qa_set_template( 'articles' );
-            $qa_content = qa_content_prepare(true);
-            $qa_content['title'] = "まとめページ";
-            $page = qa_request_part(1);
-            $html = "<p>hello articles page.</p>";
-            $html .= "<p>".$page."</p>";
-            $qa_content['custom'] = $html;
-            return $qa_content;
-            // return require ARTICLES_DIR . '/pages/articles.php';
+            qa_set_template( 'article' );
+
+            return require ARTICLES_DIR . '/pages/article.php';
         }
     }
 
