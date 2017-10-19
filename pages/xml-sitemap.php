@@ -22,14 +22,14 @@
         sitemap_output('article/'.$article['path'], $siteurl, 0.1);
     }
     // 一覧ページ
-    sitemap_output('artcles', $siturl, 0.5);
+    sitemap_output('artcles', $siteurl, 0.5);
     echo "</urlset>\n";
     return null;
 
 function sitemap_output( $request, $siteurl, $priority )
 {
     echo "\t<url>\n" .
-        "\t\t<loc>" . qa_xml( qa_path( $request, null, qa_opt( 'site_url' ) ) ) . "</loc>\n" .
+        "\t\t<loc>" . qa_xml( qa_path( $request, null, $siteurl ) ) . "</loc>\n" .
         "\t\t<priority>" . max( 0, min( 1.0, $priority ) ) . "</priority>\n" .
         "\t</url>\n";
 }
