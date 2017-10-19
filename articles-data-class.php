@@ -40,7 +40,8 @@ class ArticlesData {
      */
     public function get_article_title($page)
     {
-        if(array_key_exists($this->titles, $page)) {
+        
+        if(array_key_exists($page, $this->titles)) {
             return $this->titles[$page];
         } else {
             return '';
