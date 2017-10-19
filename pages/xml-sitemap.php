@@ -9,7 +9,8 @@
     $ad = new ArticlesData(ARTICLES_YML);
     $articles = $ad->get_articles();
     if (empty($articles)) {
-        return null;
+        $qa_content = include QA_INCLUDE_DIR.'qa-page-not-found.php';
+        return $qa_content;
     }
 
     header( 'Content-type: text/xml; charset=utf-8' );
