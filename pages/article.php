@@ -4,14 +4,13 @@
         header( 'Location: ../' );
         exit;
     }
-    require_once(ARTICLES_DIR .'/vendor/spyc/Spyc.php');
 
     $qa_content = qa_content_prepare(true);
     $page = qa_request_part(1);
 
-    $article = get_article_data($page);
-    if (!empty($article)) {
-        $qa_content['title'] = @$article['title'];
+    $ad = new ArticlesData(ARTICLES_YML);
+    if ($ad->exists_path($page)) {
+        $qa_content['title'] = $ad->get_article_title($page);
         $file = articles_get_html_path($page);
         if (file_exists($file)) {
             $html = file_get_contents($file);
@@ -31,24 +30,4 @@
 function articles_get_html_path($page)
 {
     return ARTICLES_DIR . '/html/' . $page . '.html';
-}
-
-/*
- * 設定ファイルから$pageに該当する情報を取得
- */
-function get_article_data($page)
-{
-    $articles = array();
-    $yml = ARTICLES_DIR.'/articles.yml';
-    if (file_exists($yml)) {
-        $articles = Spyc::YAMLLoad($yml);
-    }
-    $ret = array();
-    foreach ($articles as $article) {
-        if($article['path'] === $page) {
-            $ret = $article;
-            break;
-        }
-    }
-    return $ret;
 }
