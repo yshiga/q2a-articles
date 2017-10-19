@@ -8,6 +8,9 @@
     $siteurl = qa_opt( 'site_url' );
     $ad = new ArticlesData(ARTICLES_YML);
     $articles = $ad->get_articles();
+    if (empty($articles)) {
+        return null;
+    }
 
     header( 'Content-type: text/xml; charset=utf-8' );
 
