@@ -9,11 +9,16 @@
     $qa_content = qa_content_prepare(true);
     $page = qa_request_part(1);
 
-    $article = exists_article_page($page);
+    $article = get_article_data($page);
     if (!empty($article)) {
         $qa_content['title'] = @$article['title'];
-        $html = '<p>'.$page.'のまとめページ</p>';
-        $qa_content['custom'] = $html;
+        $file = articles_get_html_path($page);
+        if (file_exists($file)) {
+            $html = file_get_contents($file);
+            $qa_content['custom'] = $html;
+        } else {
+            $qa_content['custom'] = "<p>file not found.</p>";
+        }
     } else {
         $qa_content = include QA_INCLUDE_DIR.'qa-page-not-found.php';
     }
@@ -29,9 +34,9 @@ function articles_get_html_path($page)
 }
 
 /*
- * 設定ファイルに一致するpathがあるか
+ * 設定ファイルから$pageに該当する情報を取得
  */
-function exists_article_page($page)
+function get_article_data($page)
 {
     $articles = Spyc::YAMLLoad(ARTICLES_DIR . '/articles.yml');
     $ret = array();
