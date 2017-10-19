@@ -24,3 +24,4 @@ if (!defined('QA_VERSION')) { // don't allow this page to be requested directly 
 
 // Page
 qa_register_plugin_module('page', 'qa-article-page.php', 'qa_article_page', 'Article Page');
+qa_register_plugin_module('page', 'qa-articles-page.php', 'qa_articles_page', 'Articles Page');
