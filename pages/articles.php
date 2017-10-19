@@ -7,7 +7,7 @@
     require_once(ARTICLES_DIR .'/vendor/spyc/Spyc.php');
 
     $qa_content = qa_content_prepare(true);
-    $qa_content['title'] = 'まとめページ一覧'; 
+    $qa_content['title'] = qa_lang_html('articles_lang/articles_page_title'); 
 
     $articles = get_articles();
     $html = "";
@@ -20,7 +20,7 @@
         $html .= "</ul>";
         $qa_content['custom'] = $html;
     } else {
-        $qa_content = include QA_INCLUDE_DIR.'qa-page-not-found.php';
+        $qa_content['custom'] = qa_lang('articles_lang/articles_not_found');
     }
 
     return $qa_content;
@@ -30,6 +30,10 @@
  */
 function get_articles()
 {
-    $articles = Spyc::YAMLLoad(ARTICLES_DIR . '/articles.yml');
+    $articles = array();
+    $yml = ARTICLES_DIR.'/articles.yml';
+    if (file_exists($yml)) {
+        $articles = Spyc::YAMLLoad($yml);
+    }
     return $articles;
 }

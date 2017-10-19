@@ -22,6 +22,9 @@ if (!defined('QA_VERSION')) { // don't allow this page to be requested directly 
 @define( 'ARTICLES_DIR', dirname( __FILE__ ) );
 @define( 'ARTICLES_FOLDER', basename( dirname( __FILE__ ) ) );
 
+// Phrases
+qa_register_plugin_phrases('qa-articles-lang-*.php', 'articles_lang');
+
 // Page
 qa_register_plugin_module('page', 'qa-article-page.php', 'qa_article_page', 'Article Page');
 qa_register_plugin_module('page', 'qa-articles-page.php', 'qa_articles_page', 'Articles Page');

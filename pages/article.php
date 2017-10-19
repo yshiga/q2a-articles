@@ -17,7 +17,7 @@
             $html = file_get_contents($file);
             $qa_content['custom'] = $html;
         } else {
-            $qa_content['custom'] = "<p>file not found.</p>";
+            $qa_content['custom'] = qa_lang('articles_lang/file_not_found');
         }
     } else {
         $qa_content = include QA_INCLUDE_DIR.'qa-page-not-found.php';
@@ -38,7 +38,11 @@ function articles_get_html_path($page)
  */
 function get_article_data($page)
 {
-    $articles = Spyc::YAMLLoad(ARTICLES_DIR . '/articles.yml');
+    $articles = array();
+    $yml = ARTICLES_DIR.'/articles.yml';
+    if (file_exists($yml)) {
+        $articles = Spyc::YAMLLoad($yml);
+    }
     $ret = array();
     foreach ($articles as $article) {
         if($article['path'] === $page) {
