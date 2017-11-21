@@ -5,108 +5,24 @@
         exit;
     }
 
+    require_once ARTICLES_DIR.'/articles-util.php';
+
     $qa_content = qa_content_prepare(true);
     $page = qa_request_part(1);
 
     $ad = new ArticlesData(ARTICLES_YML);
     if ($ad->exists_path($page)) {
         $qa_content['title'] = $ad->get_article_title($page);
-        $file = articles_get_html_path($page);
+        $file = articles_util::get_html_path($page);
         if (file_exists($file)) {
             $html = file_get_contents($file);
             $qa_content['custom'] = $html;
         } else {
             $qa_content['custom'] = qa_lang('articles_lang/file_not_found');
         }
-        $qa_content['article_list'] = articles_get_list_html($ad, $page);
+        $qa_content['article_list'] = articles_util::get_list_html($ad, $page);
     } else {
         $qa_content = include QA_INCLUDE_DIR.'qa-page-not-found.php';
     }
 
     return $qa_content;
-
-/*
- * htmlフィアルのパス
- */
-function articles_get_html_path($page)
-{
-    return ARTICLES_DIR . '/html/' . $page . '.html';
-}
-
-/*
- * 他のまとめ記事のリストを取得
- */
-function articles_get_list_html($ad, $page)
-{
-    $title = qa_lang('articles_lang/list_title');
-    $html = '<h3 class="mdl-typography--headline">'.$title.'</h3>';
-    foreach($ad->get_articles() as $article) {
-        if ($page !== $article['path']) {
-            $html .= articles_get_list_item($article);
-        }
-    }
-
-    return $html;
-}
-
-/*
- * 個別の記事取得
- */
-function articles_get_list_item($article)
-{
-    $template_path = articles_get_html_path('article_list_template');
-    $template = file_get_contents($template_path);
-    $url = qa_path('article/'.$article['path'], null, qa_opt('site_url'));
-    $file = articles_get_html_path($article['path']);
-    if (file_exists($file)) {
-        $html = file_get_contents($file);
-        $image = articles_get_item_image($html);
-        if ($image) {
-            $image_style = 'background-image:url('.$image.');min-height:150px;';
-        } else {
-            $image_style = '';
-        }
-        $content = articles_get_item_content($html);
-        $format = qa_lang('articles_lang/updated_format');
-        $updated = date ($format, filemtime($file));
-    } else {
-        return '';
-    }
-    $params = array(
-        '^url' => $url,
-        '^image_style' => $image_style,
-        '^title' => $article['title'],
-        '^content' => $content,
-        '^updated' => $updated,
-    );
-    return strtr($template, $params);
-}
-
-/*
- * 記事内の文章を取得
- */
-function articles_get_item_content($html)
-{
-    $regex = '/<p class=\"mdl-typography--subhead\">(.+)<\/p>/i';
-    if (preg_match($regex, $html, $matches)) {
-        $ret = $matches[1];
-        $ret = mb_strimwidth($ret, 0, 170, "...", "utf-8");
-    } else {
-        $ret = '';
-    }
-    return $ret;
-}
-
-/*
- * 記事内の画像を取得
- */
-function articles_get_item_image($html)
-{
-    $regex = '/<img [^>]* src=\"(.*)\"[^>]*>/i';
-    if (preg_match($regex, $html, $matches)) {
-        $ret = $matches[1];
-    } else {
-        $ret = '';
-    }
-    return $ret;
-}
