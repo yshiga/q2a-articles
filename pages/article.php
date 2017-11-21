@@ -79,6 +79,7 @@ function articles_get_item_content($html)
     $regex = '/<p class=\"mdl-typography--subhead\">(.+)<\/p>/i';
     if (preg_match($regex, $html, $matches)) {
         $ret = $matches[1];
+        $ret = mb_strimwidth($ret, 0, 170, "...", "utf-8");
     } else {
         $ret = '';
     }
