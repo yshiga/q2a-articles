@@ -6,5 +6,5 @@ return array(
     'file_not_found' => 'ファイルが見つかりませんでした。',
     'articles_not_found' => 'まとめ記事がありません。',
     'list_title' => '編集部コラム一覧',
-    'updated_format' => '更新日： Y年m月d日',
+    'updated_format' => '最終更新日： Y年m月d日',
 );
