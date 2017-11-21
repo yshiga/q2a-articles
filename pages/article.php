@@ -54,6 +54,7 @@ function articles_get_list_item($article)
     $file = articles_get_html_path($article['path']);
     if (file_exists($file)) {
         $html = file_get_contents($file);
+        $image = articles_get_item_image($html);
         if ($image) {
             $image_style = 'background-image:url('.$image.');min-height:150px;';
         } else {
@@ -80,6 +81,17 @@ function articles_get_item_content($html)
     if (preg_match($regex, $html, $matches)) {
         $ret = $matches[1];
         $ret = mb_strimwidth($ret, 0, 170, "...", "utf-8");
+    } else {
+        $ret = '';
+    }
+    return $ret;
+}
+
+function articles_get_item_image($html)
+{
+    $regex = '/<img [^>]* src=\"(.*)\"[^>]*>/i';
+    if (preg_match($regex, $html, $matches)) {
+        $ret = $matches[1];
     } else {
         $ret = '';
     }
