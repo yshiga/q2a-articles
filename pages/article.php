@@ -33,6 +33,9 @@ function articles_get_html_path($page)
     return ARTICLES_DIR . '/html/' . $page . '.html';
 }
 
+/*
+ * 他のまとめ記事のリストを取得
+ */
 function articles_get_list_html($ad, $page)
 {
     $title = qa_lang('articles_lang/list_title');
@@ -46,6 +49,9 @@ function articles_get_list_html($ad, $page)
     return $html;
 }
 
+/*
+ * 個別の記事取得
+ */
 function articles_get_list_item($article)
 {
     $template_path = articles_get_html_path('article_list_template');
@@ -61,7 +67,8 @@ function articles_get_list_item($article)
             $image_style = '';
         }
         $content = articles_get_item_content($html);
-        $updated = date ("更新日： Y年m月d日", filemtime($file));
+        $format = qa_lang('articles_lang/updated_format');
+        $updated = date ($format, filemtime($file));
     } else {
         return '';
     }
@@ -75,6 +82,9 @@ function articles_get_list_item($article)
     return strtr($template, $params);
 }
 
+/*
+ * 記事内の文章を取得
+ */
 function articles_get_item_content($html)
 {
     $regex = '/<p class=\"mdl-typography--subhead\">(.+)<\/p>/i';
@@ -87,6 +97,9 @@ function articles_get_item_content($html)
     return $ret;
 }
 
+/*
+ * 記事内の画像を取得
+ */
 function articles_get_item_image($html)
 {
     $regex = '/<img [^>]* src=\"(.*)\"[^>]*>/i';
