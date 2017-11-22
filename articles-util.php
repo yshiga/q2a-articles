@@ -39,9 +39,13 @@ class articles_util
             $html = file_get_contents($file);
             $image = self::get_item_image($html);
             if ($image) {
-                $image_style = 'background-image:url('.$image.');min-height:150px;';
+                $image_style = 'background-image:none;min-height:150px;';
+                $lazy_load = 'lazyload';
+                $data_src = 'data-src="'.$image.'"';
             } else {
                 $image_style = '';
+                $lazy_load = '';
+                $data_src = '';
             }
             $content = self::get_item_content($html);
             $format = qa_lang('articles_lang/updated_format');
@@ -51,7 +55,9 @@ class articles_util
         }
         $params = array(
             '^url' => $url,
+            '^lazyload' => $lazy_load,
             '^image_style' => $image_style,
+            '^data_src' => $data_src,
             '^title' => $article['title'],
             '^content' => $content,
             '^updated' => $updated,
